@@ -5,7 +5,7 @@ A hands-on tutorial on using SAM with DynamoDB Local.
 
 This repository contains an AWS Lambda function that puts and gets a Person record (First name, Last name, Age) to/from a local DynamoDB instance. The process flow is as follows:  
 
-![Logo](images/process_flow.png)  
+![Logo](process_flow.png)  
 
 
 
