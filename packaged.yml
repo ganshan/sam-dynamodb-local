@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Author: Ganesh Shankaran
+    Description: A simple PUT-GET implementation demonstration use of DynamoDB Local
+      using SAM.
+    HomePageUrl: https://github.com/ganshan/sam-dynamodb-local
+    Labels:
+    - sam-dynamodb-local
+    LicenseUrl: s3://gshsar-ddblocal/86d3f3a95c324c9479bd8986968f4327
+    Name: dynamodb-local-python
+    ReadmeUrl: s3://gshsar-ddblocal/32206aaf88583654f6b89fca6542a2bf
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/ganshan/sam-dynamodb-local
+    SpdxLicenseId: Apache-2.0
+Parameters:
+  AWSENVNAME:
+    Default: AWS_SAM_LOCAL
+    Description: AWS Environment where code is being executed (AWS_SAM_LOCAL or AWS).
+    Type: String
+  DEVENVNAME:
+    Default: OSX
+    Description: Developer environment where code is being executed (OSX, Windows,
+      or Linux).
+    Type: String
+  REGIONNAME:
+    Default: us-east-1
+    Description: Default region for deployment.
+    Type: String
+  TABLENAME:
+    Default: PersonTable
+    Description: The DynamoDB table for storing Person information.
+    Type: String
+Resources:
+  Person:
+    Properties:
+      CodeUri: s3://gshsar-ddblocal/9172a03776c8d3612d6e8c176a4680f4
+      Description: A simple serverless application to demonstrate GET/PUT using DynamoDB
+        Local.
+      Environment:
+        Variables:
+          AWSENV:
+            Ref: AWSENVNAME
+          DEVENV:
+            Ref: DEVENVNAME
+          REGION:
+            Ref: REGIONNAME
+          TABLE:
+            Ref: TABLENAME
+      Events:
+        GetPerson:
+          Properties:
+            Method: GET
+            Path: /
+          Type: Api
+        PutPerson:
+          Properties:
+            Method: POST
+            Path: /
+          Type: Api
+      Handler: Person.lambda_handler
+      MemorySize: 128
+      Policies: AmazonDynamoDBFullAccess
+      Runtime: python3.6
+      Timeout: 300
+    Type: AWS::Serverless::Function
+  PersonTable:
+    Properties:
+      AttributeDefinitions:
+      - AttributeName: Id
+        AttributeType: S
+      KeySchema:
+      - AttributeName: Id
+        KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+      TableName:
+        Ref: TABLENAME
+    Type: AWS::DynamoDB::Table
+Transform: AWS::Serverless-2016-10-31

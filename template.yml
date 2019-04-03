@@ -14,30 +14,59 @@ Metadata:
     SemanticVersion: 0.0.1
     SourceCodeUrl: https://github.com/ganshan/sam-dynamodb-local
 
+Parameters:
+  TABLENAME:
+    Type: String
+    Description: The DynamoDB table for storing Person information.
+    Default: 'PersonTable'
+
+  REGIONNAME:
+    Type: String
+    Description: Default region for deployment.
+    Default: 'us-east-1'
+
+  AWSENVNAME:
+    Type: String
+    Description: AWS Environment where code is being executed (AWS_SAM_LOCAL or AWS).
+    Default: 'AWS_SAM_LOCAL'
+
+  DEVENVNAME:
+    Type: String
+    Description: Developer environment where code is being executed (OSX, Windows, or Linux).
+    Default: 'OSX'
+  
+
 Resources:
   PersonTable:
-    Type: AWS::Serverless::SimpleTable
+    Type: AWS::DynamoDB::Table
     Properties:
-      TableName: PersonTable
-      PrimaryKey:
-        Id: id
-        Type: String
-      ProvisionedThroughput:
+      TableName: !Ref TABLENAME
+      AttributeDefinitions:
+        - AttributeName: Id
+          AttributeType: S
+      KeySchema: 
+        - AttributeName: Id
+          KeyType: HASH
+      ProvisionedThroughput: 
         ReadCapacityUnits: 1
         WriteCapacityUnits: 1
-  
+
   Person:
     Type: "AWS::Serverless::Function"
     Properties:
       Runtime: python3.6
-      Handler: src/Person.lambda_handler
+      Handler: Person.lambda_handler
+      CodeUri: ./src
+      MemorySize: 128
+      Timeout: 300
+      Description: 'A simple serverless application to demonstrate GET/PUT using DynamoDB Local.'
       Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE: "PersonTable"
-          REGION: "us-west-2"
-          AWSENV: "AWS_SAM_LOCAL"
-          DEVENV: "OSX"
+          TABLE: !Ref TABLENAME
+          REGION: !Ref REGIONNAME
+          AWSENV: !Ref AWSENVNAME
+          DEVENV: !Ref DEVENVNAME
 
       Events:
         PutPerson:

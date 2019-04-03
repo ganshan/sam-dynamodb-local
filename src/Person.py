@@ -32,6 +32,9 @@ def lambda_handler(event, context):
         person_table = boto3.resource('dynamodb', region_name=region).Table(table_name)
 
 
+    # Print statement for debugging.
+    #print(event)
+    
     # Load body JSON for processing
     try:
         bodydict = json.loads(event['body'])
