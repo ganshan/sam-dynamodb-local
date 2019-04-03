@@ -1,35 +1,51 @@
 AWSTemplateFormatVersion : '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: "dynamodb-local-python"
+    Description: "A simple PUT-GET implementation demonstration use of DynamoDB Local using SAM."
+    Author: "Ganesh Shankaran"
+    SpdxLicenseId: "Apache-2.0"
+    LicenseUrl: "LICENSE.txt"
+    ReadmeUrl: "README.md"
+    Labels: ['sam-dynamodb-local']
+    HomePageUrl: https://github.com/ganshan/sam-dynamodb-local
+    SemanticVersion: 0.0.1
+    SourceCodeUrl: https://github.com/ganshan/sam-dynamodb-local
+
 Resources:
   PersonTable:
-    Type: "AWS::Serverless::SimpleTable"
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      TableName: PersonTable
+      PrimaryKey:
+        Id: id
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
   
-  PutPerson:
+  Person:
     Type: "AWS::Serverless::Function"
     Properties:
       Runtime: python3.6
-      Handler: src/PutPerson.lambda_handler
+      Handler: src/Person.lambda_handler
       Policies: AmazonDynamoDBFullAccess
       Environment:
         Variables:
-          TABLE_NAME: !Ref PersonTable
+          TABLE: "PersonTable"
+          REGION: "us-west-2"
+          AWSENV: "AWS_SAM_LOCAL"
+          DEVENV: "OSX"
+
       Events:
         PutPerson:
           Type: Api
           Properties:
             Path: /
             Method: POST
-  
-  GetPerson:
-    Type: "AWS::Serverless::Function"
-    Properties:
-      Runtime: python3.6
-      Handler: src/GetPerson.lambda_handler
-      Policies: AmazonDynamoDBFullAccess
-      Environment:
-        Variables:
-          TABLE_NAME: !Ref PersonTable
-      Events:
+
         GetPerson:
           Type: Api
           Properties:
