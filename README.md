@@ -66,13 +66,13 @@ b. User-specified input parameters will be marked with curly braces in the follo
 	*aws s3 mb s3://{s3-bucket-name} --region us-east-1*  
       
 2. Create the Serverless Application Model package using CLI.  
-	*aws cloudformation package \  
+	*sam package \  
 	--region us-east-1 \  
 	--template-file template.yml \  
 	--s3-bucket {s3-bucket-name} \  
 	--output-template-file packaged.yml*  
       
-2. Deploy the packaged template. Enter input parameters for the S3 bucket name (given in step 3 above), DynamoDB table name, and SQS queue name (from step 2 above). This step will create a DynamoDB table, and a S3 bucket using the names specified. It will also create a Lambda function with the name 'SQSLambda'.  
+2. Deploy the packaged template.  
 	*aws cloudformation deploy \  
 	--region us-east-1 \  
 	--template-file packaged.yml \  

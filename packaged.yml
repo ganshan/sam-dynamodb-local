@@ -9,7 +9,7 @@ Metadata:
     - sam-dynamodb-local
     LicenseUrl: s3://gshsar-ddblocal/86d3f3a95c324c9479bd8986968f4327
     Name: dynamodb-local-python
-    ReadmeUrl: s3://gshsar-ddblocal/238fd163d7616e95c4f191fb2582575b
+    ReadmeUrl: s3://gshsar-ddblocal/1ecfc496b744cb576fe71339567c0f8e
     SemanticVersion: 0.0.1
     SourceCodeUrl: https://github.com/ganshan/sam-dynamodb-local
     SpdxLicenseId: Apache-2.0
