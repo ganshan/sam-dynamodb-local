@@ -2,7 +2,7 @@ AWSTemplateFormatVersion: '2010-09-09'
 Metadata:
   AWS::ServerlessRepo::Application:
     Author: Ganesh Shankaran
-    Description: A simple PUT-GET implementation demonstration use of DynamoDB Local
+    Description: A simple PUT-GET implementation demonstrating the use of DynamoDB Local
       using SAM.
     HomePageUrl: https://github.com/ganshan/sam-dynamodb-local
     Labels:
